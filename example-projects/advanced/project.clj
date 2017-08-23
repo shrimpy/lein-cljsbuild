@@ -2,7 +2,7 @@
   :description "An advanced example of how to use lein-cljsbuild"
   :source-paths ["src-clj"]
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.521"
+                 [org.clojure/clojurescript "1.7.228"
                   :exclusions [org.apache.ant/ant]]
                  [compojure "1.1.6"]
                  [hiccup "1.0.4"]]
@@ -55,24 +55,39 @@
       :dev
       {:source-paths ["src-cljs"]
        :jar true
-       :compiler {:output-to "resources/public/js/main-debug.js"
-                  :optimizations :whitespace
-                  :pretty-print true}}
+       :compiler {:optimizations :simple
+                  :output-wrapper true
+                  :pretty-print true
+                  :modules {:foo {
+                    :output-to "resources/public/js/main-debug.js"
+                    :entries #{"example.hello"}
+                  }}}}
+
+      ; :dev
+      ; {:source-paths ["src-cljs"]
+      ;   :jar true
+      ;   :compiler {:optimizations :simple
+      ;             :output-wrapper true
+      ;             :pretty-print true
+      ;             :output-to "resources/public/js/main-debug.js"}}
+
       ; This build has the highest level of optimizations, so it is
       ; efficient when running the app in production.
-      :prod
-      {:source-paths ["src-cljs"]
-       :compiler {:output-to "resources/public/js/main.js"
-                  :optimizations :advanced
-                  :pretty-print false}}
+      ; :prod
+      ; {:source-paths ["src-cljs"]
+      ;  :compiler {:output-to "resources/public/js/main.js"
+      ;             :optimizations :advanced
+      ;             :pretty-print false}}
       ; This build is for the ClojureScript unit tests that will
       ; be run via PhantomJS.  See the phantom/unit-test.js file
       ; for details on how it's run.
-      :test
-      {:source-paths ["src-cljs" "test-cljs"]
-       :compiler {:output-to "resources/private/js/unit-test.js"
-                  :optimizations :whitespace
-                  :pretty-print true}}}}
+      ; :test
+      ; {:source-paths ["src-cljs" "test-cljs"]
+      ;  :compiler {:output-to "resources/private/js/unit-test.js"
+      ;             :optimizations :whitespace
+      ;             :pretty-print true}}
+                  }}
+
   ; Clean JS directories
   :clean-targets ^{:protect false} ["resources/private/js" 
                                     "resources/public/js"

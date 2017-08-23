@@ -1,4 +1,5 @@
 (ns example.hello
+; (ns example
   (:require
     [example.crossover.shared :as shared]))
 
